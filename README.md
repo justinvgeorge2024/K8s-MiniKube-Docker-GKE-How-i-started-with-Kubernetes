@@ -1,20 +1,20 @@
 # K8s-MiniKube-Docker-GKE-How-i-started-with-Kubernetes  
-My own self start journey on how i started using Kubernetes and associated tech.  
+My own self learning journey on how i started using Kubernetes and associated tech.  
 ```Learning material | Hand-on tutorials | try-outs | issues | problems | solutions``` that i can come back to and refer in the future.
 
 ---
 # DISCLAIMER :
-I Do not own any intellectual rights to any of the (externally sourced) contents nor do I plan to use the specific contents for distribution/redistribution of any information written below for monetary gains. These have been gathered from different sources(as cited below) and has been prepared by me for self-learning purposes (i.e., educational purposes) and to prepare a documentation for future references (something I can come back to-to refresh the topics).
+I don't own any intellectual rights to any of the (externally sourced) contents nor do I plan to use the specific contents for distribution/redistribution of any information written below for monetary gains. These have been gathered from different sources(as cited below) and has been prepared by me for self-learning purposes (i.e., educational purposes) and to prepare a documentation for future references (something I can come back to-to refresh the topics).
 
 ---
-NOTE : Readers / First-timers / Explorers / Recruiters -> start with ```How i started with kubernetes.docx``` file 
+NOTE : Readers / First-timers / Explorers / Recruiters -> start with ```How i started with kubernetes.docx``` file
 
 ---
 
 # CONTENT SOURCES:
 
   >## Official documentation:
-  >https://kubernetes.io/docs/concepts/es  
+  >https://kubernetes.io/docs/concepts/es
   >## starter/ hands-on tutorial landing page:
   >https://kubernetes.io/docs/tutorials/
   >## Tutorial: 
@@ -23,7 +23,14 @@ NOTE : Readers / First-timers / Explorers / Recruiters -> start with ```How i st
   >(Literature content – no hands on – paid certification(189$) (might do after getting a good job?)
   >–course content viewable )  
   >https://www.edx.org/learn/kubernetes/the-linux-foundation-introduction-to-kubernetes
+---
+# MiniKube Setup
 
+>minikube download/install
+  >>https://minikube.sigs.k8s.io/docs/start/?arch=%2Fwindows%2Fx86-64%2Fstable%2F.exe+download
+
+>Docker (better to proceed from minikube website rather than docker)
+  >>https://minikube.sigs.k8s.io/docs/drivers/docker/  
 ---
 # Other Resources---
 
