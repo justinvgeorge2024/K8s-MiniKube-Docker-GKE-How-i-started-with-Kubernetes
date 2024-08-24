@@ -32,6 +32,11 @@ NOTE : Readers / First-timers / Explorers / Recruiters -> start with ```How i st
 >Docker (better to proceed from minikube website rather than docker)
   >>https://minikube.sigs.k8s.io/docs/drivers/docker/  
 ---
+# Kubectl
+
+>  Additional details about the kubectl command line client can be found in the [kubectl book](https://kubectl.docs.kubernetes.io/), [the Kubernetes official documentation](https://kubernetes.io/docs/reference/kubectl/), or its [GitHub repository](https://github.com/kubernetes/kubectl).
+
+---
 # Other Resources---
 
   >## Hands-on guide:
