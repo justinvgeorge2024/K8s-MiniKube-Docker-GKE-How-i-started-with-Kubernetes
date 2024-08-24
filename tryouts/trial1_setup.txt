@@ -1,0 +1,95 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Install the latest PowerShell for new features and improvements! https://aka.ms/PSWindows
+
+. : File C:\Users\justi\OneDrive\Documents\WindowsPowerShell\profile.ps1 cannot be loaded because 
+running scripts is disabled on this system. For more information, see about_Execution_Policies at 
+https:/go.microsoft.com/fwlink/?LinkID=135170.
+At line:1 char:3
++ . 'C:\Users\justi\OneDrive\Documents\WindowsPowerShell\profile.ps1'
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : SecurityError: (:) [], PSSecurityException
+    + FullyQualifiedErrorId : UnauthorizedAccess
+PS C:\Users\justi> minikube start --driver=docker
+>> 
+* minikube v1.33.1 on Microsoft Windows 11 Home Single Language 10.0.22631.4037 Build 22631.4037
+E0823 21:52:37.531975   24476 start.go:812] api.Load failed for minikube: filestore "minikube": Docker machine "minikube" does not exist. Use "docker-machine ls" to list machines. Use "docker-machine create" to add a new one.
+
+! Exiting due to GUEST_DRIVER_MISMATCH: The existing "minikube" cluster was created using the "virtualbox" driver, which is incompatible with requested "docker" driver.
+* Suggestion: Delete the existing 'minikube' cluster using: 'minikube delete', or start the existing 'minikube' cluster using: 'minikube start --driver=virtualbox'
+
+PS C:\Users\justi> minikube delete               
+>> 
+* Removed all traces of the "minikube" cluster.
+PS C:\Users\justi> minikube start --driver=docker
+>> 
+* minikube v1.33.1 on Microsoft Windows 11 Home Single Language 10.0.22631.4037 Build 22631.4037
+* Using the docker driver based on user configuration
+* Using Docker Desktop driver with root privileges
+* Starting "minikube" primary control-plane node in "minikube" cluster
+* Pulling base image v0.0.44 ...
+    > gcr.io/k8s-minikube/kicbase...:  481.25 MiB / 481.58 MiB  99.93% 12.00 Mi
+* Creating docker container (CPUs=2, Memory=4000MB) ...
+* Preparing Kubernetes v1.30.0 on Docker 26.1.1 ...
+  - Generating certificates and keys ...
+  - Booting up control plane ...
+  - Configuring RBAC rules ...
+* Configuring bridge CNI (Container Networking Interface) ...
+* Verifying Kubernetes components...
+  - Using image gcr.io/k8s-minikube/storage-provisioner:v5
+* Enabled addons: storage-provisioner, default-storageclass
+* Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
+PS C:\Users\justi> kubectl get po -A
+NAMESPACE     NAME                               READY   STATUS    RESTARTS      AGE
+kube-system   coredns-7db6d8ff4d-wzx96           1/1     Running   0             32s
+kube-system   etcd-minikube                      1/1     Running   0             46s
+kube-system   kube-apiserver-minikube            1/1     Running   0             46s
+kube-system   kube-controller-manager-minikube   1/1     Running   0             46s
+kube-system   kube-proxy-2287s                   1/1     Running   0             32s
+kube-system   kube-scheduler-minikube            1/1     Running   0             46s
+kube-system   storage-provisioner                1/1     Running   1 (11s ago)   45s
+PS C:\Users\justi>minikube kubectl -- get po -A
+    > kubectl.exe.sha256:  64 B / 64 B [---------------------] 100.00% ? p/s 0s
+    > kubectl.exe:  50.38 MiB / 50.38 MiB [----------] 100.00% 2.55 MiB p/s 20s
+NAMESPACE     NAME                               READY   STATUS    RESTARTS      AGE
+kube-system   coredns-7db6d8ff4d-wzx96           1/1     Running   0             73s
+kube-system   etcd-minikube                      1/1     Running   0             87s
+kube-system   kube-apiserver-minikube            1/1     Running   0             87s
+kube-system   kube-controller-manager-minikube   1/1     Running   0             87s
+kube-system   kube-proxy-2287s                   1/1     Running   0             73s
+kube-system   kube-scheduler-minikube            1/1     Running   0             87s
+kube-system   storage-provisioner                1/1     Running   1 (52s ago)   86s
+PS C:\Users\justi> alias kubectl="minikube kubectl --"
+alias : This command cannot find a matching alias because an alias with the name 'kubectl=minikube 
+kubectl --' does not exist.
+At line:1 char:1
++ alias kubectl="minikube kubectl --"
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (kubectl=minikube kubectl --:String) [Get-Alias], ItemNot  
+   FoundException
+    + FullyQualifiedErrorId : ItemNotFoundException,Microsoft.PowerShell.Commands.GetAliasCommand        
+
+PS C:\Users\justi> docker dashboard 
+docker: 'dashboard' is not a docker command.
+See 'docker --help'
+PS C:\Users\justi>minikube dashboard
+* Enabling dashboard ...
+  - Using image docker.io/kubernetesui/dashboard:v2.7.0
+  - Using image docker.io/kubernetesui/dashboard:v2.7.0
+  - Using image docker.io/kubernetesui/dashboard:v2.7.0  - Using image docker.io/kubernetesui/dashboard:v2.7.0  - Using image docker.io/kubernetesui/dashboard:v2.7.0  - Using image docker.io/kubernetesui/dashboard:v2.7.0  - Using image docker.io/kubernetesui/dashboard:v2.7.0  - Using image docker.io/kubernetesui/dashboard:v  - Using image  - Using image docker.io/kubernetesui/metrics-scraper:v1.0.8------------------------------------------------XX* Some dashboard features require the metrics-server addon. To enable all features please run:
+
+        minikube addons enable metrics-server
+
+* Verifying dashboard health ...
+* Launching proxy ...
+* Verifying proxy health ...
+* Opening http://127.0.0.1:51665/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/ in your default browser...----------------------------------------------------------------------------XXPS C:\Users\justi> minikube status
+minikube
+type: Control Plane
+host: Running
+kubelet: Running
+apiserver: Running
+kubeconfig: Configured
+
+PS C:\Users\justi>

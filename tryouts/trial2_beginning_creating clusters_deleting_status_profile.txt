@@ -1,0 +1,128 @@
+PS C:\Users\justi> minikube status
+minikube
+type: Control Plane
+host: Running
+kubelet: Running
+apiserver: Running
+kubeconfig: Configured
+
+PS C:\Users\justi> minikube stop
+✋  Stopping node "minikube"  ...
+🛑  Powering off "minikube" via SSH ...
+🛑  1 node stopped.
+PS C:\Users\justi> minikube status
+minikube
+type: Control Plane
+host: Stopped
+kubelet: Stopped
+apiserver: Stopped
+kubeconfig: Stopped
+
+PS C:\Users\justi> minikube profile list
+|----------|-----------|---------|--------------|------|---------|---------|-------|----------------|--------------------|
+| Profile  | VM Driver | Runtime |      IP      | Port | Version | Status  | Nodes | Active Profile | Active Kubecontext |
+|----------|-----------|---------|--------------|------|---------|---------|-------|----------------|--------------------|
+| minikube | docker    | docker  | 192.168.49.2 | 8443 | v1.30.0 | Stopped |     1 | *              |                    |
+|----------|-----------|---------|--------------|------|---------|---------|-------|----------------|--------------------|
+PS C:\Users\justi> minikube start --driver=docker -n 2 \
+😄  minikube v1.33.1 on Microsoft Windows 11 Home Single Language 10.0.22631.4037 Build 22631.4037
+✨  Using the docker driver based on existing profile
+❗  You cannot change the number of nodes for an existing minikube cluster. Please use 'minikube node add' to add nodes to an existing cluster.
+👍  Starting "minikube" primary control-plane node in "minikube" cluster
+🚜  Pulling base image v0.0.44 ...
+🔄  Restarting existing docker container for "minikube" ...
+PS C:\Users\justi> minikube profile
+minikube
+PS C:\Users\justi> minikube profile list
+|----------|-----------|---------|--------------|------|---------|---------|-------|----------------|--------------------|
+| Profile  | VM Driver | Runtime |      IP      | Port | Version | Status  | Nodes | Active Profile | Active Kubecontext |
+|----------|-----------|---------|--------------|------|---------|---------|-------|----------------|--------------------|
+| minikube | docker    | docker  | 192.168.49.2 | 8443 | v1.30.0 | Stopped |     1 | *              |                    |
+|----------|-----------|---------|--------------|------|---------|---------|-------|----------------|--------------------|
+PS C:\Users\justi> minikube start --driver=docker -n 2 --container-runtime=cri-o --kubernetes-version=v1.27.12 -p minidock
+😄  [minidock] minikube v1.33.1 on Microsoft Windows 11 Home Single Language 10.0.22631.4037 Build 22631.4037
+✨  Using the docker driver based on user configuration
+📌  Using Docker Desktop driver with root privileges
+👍  Starting "minidock" primary control-plane node in "minidock" cluster
+🚜  Pulling base image v0.0.44 ...
+💾  Downloading Kubernetes v1.27.12 preload ...
+    > preloaded-images-k8s-v18-v1...:  372.28 MiB / 372.28 MiB  100.00% 12.31 M
+🔥  Creating docker container (CPUs=2, Memory=2200MB) ...
+🎁  Preparing Kubernetes v1.27.12 on CRI-O 1.24.6 ...
+    ▪ Generating certificates and keys ...
+    ▪ Booting up control plane ...
+    ▪ Configuring RBAC rules ...
+🔗  Configuring CNI (Container Networking Interface) ...
+🔎  Verifying Kubernetes components...
+    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
+🌟  Enabled addons: storage-provisioner, default-storageclass
+
+👍  Starting "minidock-m02" worker node in "minidock" cluster
+🚜  Pulling base image v0.0.44 ...
+🔥  Creating docker container (CPUs=2, Memory=2200MB) ...
+🌐  Found network options:
+    ▪ NO_PROXY=192.168.58.2
+    ▪ NO_PROXY=192.168.58.2
+🎁  Preparing Kubernetes v1.27.12 on CRI-O 1.24.6 ...
+    ▪ env NO_PROXY=192.168.58.2
+🔎  Verifying Kubernetes components...
+
+❗  C:\Program Files\Docker\Docker\resources\bin\kubectl.exe is version 1.30.2, which may have incompatibilities with Kubernetes 1.27.12.
+    ▪ Want kubectl v1.27.12? Try 'minikube kubectl -- get pods -A'
+🏄  Done! kubectl is now configured to use "minidock" cluster and "default" namespace by default
+PS C:\Users\justi> minikube profile list
+|----------|-----------|---------|--------------|------|----------|---------|-------|----------------|--------------------|
+| Profile  | VM Driver | Runtime |      IP      | Port | Version  | Status  | Nodes | Active Profile | Active Kubecontext |
+|----------|-----------|---------|--------------|------|----------|---------|-------|----------------|--------------------|
+| minidock | docker    | crio    | 192.168.58.2 | 8443 | v1.27.12 | Running |     2 |                | *                  |
+| minikube | docker    | docker  | 192.168.49.2 | 8443 | v1.30.0  | Stopped |     1 | *              |                    |
+|----------|-----------|---------|--------------|------|----------|---------|-------|----------------|--------------------|
+PS C:\Users\justi> miikube profile minidock
+miikube : The term 'miikube' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the
+spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:1
++ miikube profile minidock
++ ~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (miikube:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\Users\justi> minikube profile minidock
+✅  minikube profile was successfully set to minidock
+PS C:\Users\justi> minikube profile list
+|----------|-----------|---------|--------------|------|----------|---------|-------|----------------|--------------------|
+| Profile  | VM Driver | Runtime |      IP      | Port | Version  | Status  | Nodes | Active Profile | Active Kubecontext |
+|----------|-----------|---------|--------------|------|----------|---------|-------|----------------|--------------------|
+| minidock | docker    | crio    | 192.168.58.2 | 8443 | v1.27.12 | Running |     2 | *              | *                  |
+| minikube | docker    | docker  | 192.168.49.2 | 8443 | v1.30.0  | Stopped |     1 |                |                    |
+|----------|-----------|---------|--------------|------|----------|---------|-------|----------------|--------------------|
+PS C:\Users\justi> docker ps
+CONTAINER ID   IMAGE                                 COMMAND                  CREATED              STATUS              PORTS                                                                                                                                  NAMES
+00e21b85177e   gcr.io/k8s-minikube/kicbase:v0.0.44   "/usr/local/bin/entr…"   About a minute ago   Up About a minute   127.0.0.1:51917->22/tcp, 127.0.0.1:51918->2376/tcp, 127.0.0.1:51920->5000/tcp, 127.0.0.1:51921->8443/tcp, 127.0.0.1:51919->32443/tcp   minidock-m02
+f78754090e6f   gcr.io/k8s-minikube/kicbase:v0.0.44   "/usr/local/bin/entr…"   About a minute ago   Up About a minute   127.0.0.1:51892->22/tcp, 127.0.0.1:51893->2376/tcp, 127.0.0.1:51895->5000/tcp, 127.0.0.1:51896->8443/tcp, 127.0.0.1:51894->32443/tcp   minidock
+411b147ec594   gcr.io/k8s-minikube/kicbase:v0.0.44   "/usr/local/bin/entr…"   11 minutes ago       Up 3 minutes        127.0.0.1:51860->22/tcp, 127.0.0.1:51861->2376/tcp, 127.0.0.1:51863->5000/tcp, 127.0.0.1:51859->8443/tcp, 127.0.0.1:51862->32443/tcp   minikube
+PS C:\Users\justi> minikube delete
+🔥  Deleting "minidock" in docker ...
+🔥  Deleting container "minidock" ...
+🔥  Deleting container "minidock-m02" ...
+🔥  Removing C:\Users\justi\.minikube\machines\minidock ...
+🔥  Removing C:\Users\justi\.minikube\machines\minidock-m02 ...
+💀  Removed all traces of the "minidock" cluster.
+PS C:\Users\justi> minikube profile list
+|----------|-----------|---------|--------------|------|---------|---------|-------|----------------|--------------------|
+| Profile  | VM Driver | Runtime |      IP      | Port | Version | Status  | Nodes | Active Profile | Active Kubecontext |
+|----------|-----------|---------|--------------|------|---------|---------|-------|----------------|--------------------|
+| minikube | docker    | docker  | 192.168.49.2 | 8443 | v1.30.0 | Stopped |     1 | *              |                    |
+|----------|-----------|---------|--------------|------|---------|---------|-------|----------------|--------------------|
+PS C:\Users\justi> minikube delete -p minikube
+🔥  Deleting "minikube" in docker ...
+🔥  Deleting container "minikube" ...
+🔥  Removing C:\Users\justi\.minikube\machines\minikube ...
+💀  Removed all traces of the "minikube" cluster.
+PS C:\Users\justi> docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+PS C:\Users\justi> minikube profile list
+
+🤹  Exiting due to MK_USAGE_NO_PROFILE: No minikube profile was found.
+💡  Suggestion:
+
+    You can create one using 'minikube start'.

@@ -1,0 +1,66 @@
+* Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
+PS C:\Users\justi> minikube status
+minikube
+type: Control Plane
+host: Running
+kubelet: Running
+apiserver: Running
+kubeconfig: Configured
+
+minikube-m02
+type: Worker
+host: Running
+kubelet: Running
+
+minikube-m03
+type: Worker
+host: Running
+kubelet: Running
+
+PS C:\Users\justi> minikube node list
+minikube        192.168.49.2
+minikube-m02    192.168.49.3
+minikube-m03    192.168.49.4
+PS C:\Users\justi> minikube profile list
+|----------------|------------|---------|--------------|------|---------|---------|-------|----------------|--------------------|
+|    Profile     | VM Driver  | Runtime |      IP      | Port | Version | Status  | Nodes | Active Profile | Active Kubecontext |
+|----------------|------------|---------|--------------|------|---------|---------|-------|----------------|--------------------|
+| hypervminikube | hyperv     | docker  |              | 8443 | v1.30.0 |         |     1 |                |                    |
+| minikube       | docker     | docker  | 192.168.49.2 | 8443 | v1.30.0 | Running |     3 | *              | *                  |
+| vbox           | virtualbox | docker  |              | 8443 | v1.30.0 |         |     1 |                |                    |
+|----------------|------------|---------|--------------|------|---------|---------|-------|----------------|--------------------|
+PS C:\Users\justi> minikube profile vbox
+* minikube profile was successfully set to vbox
+PS C:\Users\justi> minikube status
+E0824 10:09:29.167408   10812 status.go:263] The "vbox" host does not exist!
+vbox
+type: Control Plane
+host: Nonexistent
+kubelet: Nonexistent
+apiserver: Nonexistent
+kubeconfig: Nonexistent
+
+PS C:\Users\justi> minikube node list
+vbox
+PS C:\Users\justi> minikube profile hypervminikube
+* minikube profile was successfully set to hypervminikube
+PS C:\Users\justi> minikube status
+E0824 10:09:56.313097   16772 status.go:263] The "hypervminikube" host does not exist!
+hypervminikube
+type: Control Plane
+host: Nonexistent
+kubelet: Nonexistent
+apiserver: Nonexistent
+kubeconfig: Nonexistent
+
+PS C:\Users\justi> minikube node list
+hypervminikube
+PS C:\Users\justi> minikube delete -p hypervminikube
+* Removed all traces of the "hypervminikube" cluster.
+PS C:\Users\justi> minikube profile list
+|----------|------------|---------|--------------|------|---------|---------|-------|----------------|--------------------|
+| Profile  | VM Driver  | Runtime |      IP      | Port | Version | Status  | Nodes | Active Profile | Active Kubecontext |
+|----------|------------|---------|--------------|------|---------|---------|-------|----------------|--------------------|
+| minikube | docker     | docker  | 192.168.49.2 | 8443 | v1.30.0 | Running |     3 | *              |                    |
+| vbox     | virtualbox | docker  |              | 8443 | v1.30.0 |         |     1 |                |                    |
+|----------|------------|---------|--------------|------|---------|---------|-------|----------------|--------------------|

@@ -1,0 +1,44 @@
+*Current system : windows 11 Home | 16 GB ram | i7 12th Gen | nvidia RTX 3060 | Asus M16(2022 edition
+additional info : WSL 2 and Oracle vBox were already present before installing docker & minikube.
+
+---issue------
+minikube start --driver=hyperv does not work properly
+------
+*diagnosis
+--> HyperV is not available by default in Windows 11 Home version ( same for win 10 Home)
+#Best Solution
+--> use another driver : virtualbox or docker (Recommended) or something else
+#workarounds 
+--> or setup hyperv in windows (upgrade to pro/enterprise versions...)
+--> another workaround (could be sketchy? not sure |Haven't Tried | Wont try in my current system) 
+     	--> link : https://www.makeuseof.com/install-hyper-v-windows-11-home/
+
+---issue------
+minikube start --driver=virtualbox throwing errors like VT-X/AT-X and other problems
+------
+--> presence of WSL 2 induces some virualization problems and conflicts
+--> as per web-sources Disabling WSL2 should work.
+*persisting problem | unsolved
+--> For my system, minikube starts and shows up in virtualbox but system crashes(self restart| your pc ran into a problem) or powershell freezes.
+*probable reason - virtualisation issues
+	--> Using windows home which does not support Hyperv directly 
+#workaround | not found
+
+---issue------
+Exiting due to GUEST_START: failed to start node: Failed kubeconfig update: decode kubeconfig from " ~\\.kube\\config": decode data: : yaml: control characters are not allowed
+------ 
+*diagnosis
+--> the cofig file in ~C:\users\~\.kube\ directory contains invalid characters
+--> my entire config file was corrupted
+--> showed up randomly on 3rd day using minikube (everthing was fine till the day before)
+*probable reasons
+--> some problem (incorrect configuration/system issue) might have occurred while running >minikube start ...
+# Best solution
+--> delete the config file (common directory path: C:\users\<user>\.kube\) [might have to enable hidden files]
+   --> then re-run the >minikube start ... command
+*it will automatically create a new (compatible) config file
+#workaround
+--> if problem still persists.. run> minikube delete (delete the problematic profiles [or all profiles (*_0) ])
+--> then delete the config file and retry the >minikube start
+
+-------
