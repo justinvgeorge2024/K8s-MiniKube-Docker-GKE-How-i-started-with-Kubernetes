@@ -41,4 +41,15 @@ Exiting due to GUEST_START: failed to start node: Failed kubeconfig update: deco
 --> if problem still persists.. run> minikube delete (delete the problematic profiles [or all profiles (*_0) ])
 --> then delete the config file and retry the >minikube start
 
--------
+---issue----
+kubectl powershell auto completion not working
+*diagnosis
+-->might need to enable scripts in powershell
+#solution
+run in PS: Set-ExecutionPolicy RemoteSigned
+then press Y
+then run: kubectl completion powershell | Out-String | Invoke-Expression
+then run: kubectl completion powershell >> $PROFILE
+then restart PS
+
+-----------
