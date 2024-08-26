@@ -59,4 +59,12 @@ commands like: > export TOKEN=$(kubectl create token default)
 #solution
 Run the command(s) in Git Bash
 
----------------
+
+---issue----
+--> pod not READY
+refer trial_6 > pods
+* a sample problem case and solution is displayed
+# if the replace option is not working/ throwing errors
+* use --force to force the change
+
+------------
