@@ -67,4 +67,13 @@ refer trial_6 > pods
 # if the replace option is not working/ throwing errors
 * use --force to force the change
 
-------------
+------issue------
+> kubectl.exe get rs frontend --replicas=4
+error: unknown flag: --replicas
+#diagnosis
+--replicas is not supported with get
+--> use with scale / exopse
+*supported command
+> kubectl scale rs frontend --replicas=4
+
+--------------
