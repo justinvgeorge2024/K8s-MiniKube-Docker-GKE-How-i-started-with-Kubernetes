@@ -1,0 +1,214 @@
+-------------
+pod creation through a .yaml file
+---------
+(base) PS D:\canonical\tryouts\trial 6 pods> notepad nginx.yaml
+
+(base) PS D:\canonical\tryouts\trial 6 pods> kubectl apply -f .\nginx.yaml
+pod/nginx created
+
+(base) PS D:\canonical\tryouts\trial 6 pods> kubectl get pods
+NAME    READY   STATUS              RESTARTS   AGE
+nginx   0/1     ContainerCreating   0          11s
+(base) PS D:\canonical\tryouts\trial 6 pods> kubectl get pods -o wide
+NAME    READY   STATUS    RESTARTS   AGE   IP           NODE           NOMINATED NODE   READINESS GATES
+nginx   1/1     Running   0          19s   10.244.1.4   minikube-m02   <none>           <none>
+(base) PS D:\canonical\tryouts\trial 6 pods>
+(base) PS D:\canonical\tryouts\trial 6 pods>
+---------
+through an image
+-------
+(base) PS D:\canonical\tryouts\trial 6 pods> kubectl run firstrun -- image=nginx
+error: required flag(s) "image" not set
+(base) PS D:\canonical\tryouts\trial 6 pods> kubectl run firstrun --image=nginx
+pod/firstrun created
+(base) PS D:\canonical\tryouts\trial 6 pods> kubectl get pods -o wide
+NAME       READY   STATUS              RESTARTS   AGE    IP           NODE           NOMINATED NODE   READINESS GATES
+firstrun   0/1     ContainerCreating   0          13s    <none>       minikube-m03   <none>           <none>
+nginx      1/1     Running             0          116s   10.244.1.4   minikube-m02   <none>           <none>
+(base) PS D:\canonical\tryouts\trial 6 pods> kubectl get pods -o wide
+NAME       READY   STATUS    RESTARTS   AGE     IP           NODE           NOMINATED NODE   READINESS GATES
+firstrun   1/1     Running   0          72s     10.244.2.3   minikube-m03   <none>           <none>
+nginx      1/1     Running   0          2m55s   10.244.1.4   minikube-m02   <none>           <none>
+(base) PS D:\canonical\tryouts\trial 6 pods>
+
+
+
+-----------
+through a hybrid mode--- using existing pods and creating a new one || this has intentional errors to demonstrate what happens in case of errors...
+-----
+
+(base) PS D:\canonical\tryouts\trial 6 pods> kubectl.exe run firstrun --image=nginxx --port=88 --dry-run=client -o yaml > secondrun.yaml
+
+(base) PS D:\canonical\tryouts\trial 6 pods> notepad .\secondrun.yaml
+
+---------
+change the obvious common terms ->> fristrun-> second run , port =88 ->80
+unchanged errors : image = nginxx (should be nginx)
+---------
+
+(base) PS D:\canonical\tryouts\trial 6 pods> kubectl.exe apply -f .\secondrun.yaml
+pod/secondrun created
+(base) PS D:\canonical\tryouts\trial 6 pods> kubectl.exe get pods
+NAME        READY   STATUS         RESTARTS   AGE
+firstrun    1/1     Running        0          8m34s
+nginx       1/1     Running        0          10m
+secondrun   0/1     ErrImagePull   0          8s
+
+-------------
+second run is not READY ---> describing pod to see the problem
+--------------
+
+(base) PS D:\canonical\tryouts\trial 6 pods> kubectl.exe describe pods secondrun
+Name:             secondrun
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             minikube-m03/192.168.49.4
+Start Time:       Mon, 26 Aug 2024 10:02:43 +0530
+Labels:           run=secondrun
+Annotations:      <none>
+Status:           Pending
+IP:               10.244.2.4
+IPs:
+  IP:  10.244.2.4
+Containers:
+  secondrun:
+    Container ID:
+    Image:          nginxx
+    Image ID:
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Waiting
+      Reason:       ImagePullBackOff
+    Ready:          False
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-mbsgl (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True
+  Initialized                 True
+  Ready                       False
+  ContainersReady             False
+  PodScheduled                True
+Volumes:
+  kube-api-access-mbsgl:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason     Age                From               Message
+  ----     ------     ----               ----               -------
+  Normal   Scheduled  79s                default-scheduler  Successfully assigned default/secondrun to minikube-m03
+  Normal   Pulling    33s (x3 over 79s)  kubelet            Pulling image "nginxx"
+  Warning  Failed     30s (x3 over 76s)  kubelet            Failed to pull image "nginxx": Error response from daemon: pull access denied for nginxx, repository does not exist or may require 'docker login': denied: requested access to the resource is denied
+  Warning  Failed     30s (x3 over 76s)  kubelet            Error: ErrImagePull
+  Normal   BackOff    1s (x4 over 76s)   kubelet            Back-off pulling image "nginxx"
+  Warning  Failed     1s (x4 over 76s)   kubelet            Error: ImagePullBackOff
+
+------------------
+the error is displayed above | incorrect image name
+------------------
+
+
+(base) PS D:\canonical\tryouts\trial 6 pods>
+(base) PS D:\canonical\tryouts\trial 6 pods> notepad .\secondrun.yaml
+
+------------
+error corrected
+------------
+
+------
+replacing error | might throw issue if not using --force
+-------
+(base) PS D:\canonical\tryouts\trial 6 pods> kubectl.exe replace -f .\secondrun.yaml
+The Pod "secondrun" is invalid: spec: Forbidden: pod updates may not change fields other than `spec.containers[*].image`,`spec.initContainers[*].image`,`spec.activeDeadlineSeconds`,`spec.tolerations` (only additions to existing tolerations),`spec.terminationGracePeriodSeconds` (allow it to be set to 1 if it was previously negative)
+  core.PodSpec{
+-       Volumes: []core.Volume{
+-               {
+-                       Name:         "kube-api-access-mbsgl",
+-                       VolumeSource: core.VolumeSource{Projected: &core.ProjectedVolumeSource{...}},
+-               },
+-       },
++       Volumes:        nil,
+        InitContainers: nil,
+        Containers: []core.Container{
+                {
+                        ... // 9 identical fields
+                        ResizePolicy:  nil,
+                        RestartPolicy: nil,
+-                       VolumeMounts: []core.VolumeMount{
+-                               {
+-                                       Name:      "kube-api-access-mbsgl",
+-                                       ReadOnly:  true,
+-                                       MountPath: "/var/run/secrets/kubernetes.io/serviceaccount",
+-                               },
+-                       },
++                       VolumeMounts:  nil,
+                        VolumeDevices: nil,
+                        LivenessProbe: nil,
+                        ... // 10 identical fields
+                },
+        },
+        EphemeralContainers: nil,
+        RestartPolicy:       "Always",
+        ... // 2 identical fields
+        DNSPolicy:                    "ClusterFirst",
+        NodeSelector:                 nil,
+-       ServiceAccountName:           "default",
++       ServiceAccountName:           "",
+        AutomountServiceAccountToken: nil,
+-       NodeName:                     "minikube-m03",
++       NodeName:                     "",
+        SecurityContext:              &{},
+        ImagePullSecrets:             nil,
+        ... // 19 identical fields
+  }
+
+------------------------
+forcing the change
+------------------------
+
+(base) PS D:\canonical\tryouts\trial 6 pods> kubectl.exe replace --force -f .\secondrun.yaml
+pod "secondrun" deleted
+pod/secondrun replaced
+(base) PS D:\canonical\tryouts\trial 6 pods> kubectl.exe get pods -o wide
+NAME        READY   STATUS    RESTARTS   AGE   IP           NODE           NOMINATED NODE   READINESS GATES
+firstrun    1/1     Running   0          10m   10.244.2.3   minikube-m03   <none>           <none>
+nginx       1/1     Running   0          12m   10.244.1.4   minikube-m02   <none>           <none>
+secondrun   1/1     Running   0          11s   10.244.2.5   minikube-m03   <none>           <none>
+(base) PS D:\canonical\tryouts\trial 6 pods>
+
+----------------
+deleting the pods
+1. through .yaml file
+---------------
+
+(base) PS D:\canonical\tryouts\trial 6 pods>
+(base) PS D:\canonical\tryouts\trial 6 pods> kubectl delete -f .\nginx.yaml
+pod "nginx" deleted
+(base) PS D:\canonical\tryouts\trial 6 pods> kubectl.exe get pods -o wide
+NAME        READY   STATUS    RESTARTS   AGE   IP           NODE           NOMINATED NODE   READINESS GATES
+firstrun    1/1     Running   0          11m   10.244.2.3   minikube-m03   <none>           <none>
+secondrun   1/1     Running   0          38s   10.244.2.5   minikube-m03   <none>           <none>
+(base) PS D:\canonical\tryouts\trial 6 pods>
+
+-------------------
+2. through names | multiple pods
+--------------------
+
+
+(base) PS D:\canonical\tryouts\trial 6 pods>
+(base) PS D:\canonical\tryouts\trial 6 pods> kubectl delete pods firstrun secondrun
+pod "firstrun" deleted
+pod "secondrun" deleted
+(base) PS D:\canonical\tryouts\trial 6 pods> kubectl.exe get pods -o wide
+No resources found in default namespace.
+(base) PS D:\canonical\tryouts\trial 6 pods>
