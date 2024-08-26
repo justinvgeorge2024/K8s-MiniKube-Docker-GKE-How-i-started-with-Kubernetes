@@ -52,4 +52,11 @@ then run: kubectl completion powershell | Out-String | Invoke-Expression
 then run: kubectl completion powershell >> $PROFILE
 then restart PS
 
------------
+-----issue------
+[API's with authentication]
+commands like: > export TOKEN=$(kubectl create token default)
+*dosen't work in windows powershell/cmd
+#solution
+Run the command(s) in Git Bash
+
+---------------
