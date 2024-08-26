@@ -1,0 +1,42 @@
+PS C:\Windows\system32> minikube status
+minikube
+type: Control Plane
+host: Running
+kubelet: Running
+apiserver: Running
+kubeconfig: Configured
+
+minikube-m02
+type: Worker
+host: Running
+kubelet: Running
+
+minikube-m03
+type: Worker
+host: Running
+kubelet: Running
+
+PS C:\Windows\system32> minikube profile list
+|----------|-----------|---------|--------------|------|---------|---------|-------|----------------|--------------------|
+| Profile  | VM Driver | Runtime |      IP      | Port | Version | Status  | Nodes | Active Profile | Active Kubecontext |
+|----------|-----------|---------|--------------|------|---------|---------|-------|----------------|--------------------|
+| minikube | docker    | docker  | 192.168.49.2 | 8443 | v1.30.0 | Running |     3 | *              | *                  |
+|----------|-----------|---------|--------------|------|---------|---------|-------|----------------|--------------------|
+
+__________________________________________________________
+
+PS C:\Windows\system32> minikube kubectl -- get namespaces
+NAME              STATUS   AGE
+default           Active   2m53s
+kube-node-lease   Active   2m53s
+kube-public       Active   2m53s
+kube-system       Active   2m53s
+
+PS C:\Windows\system32> minikube kubectl -- get nodes
+NAME           STATUS   ROLES           AGE     VERSION
+minikube       Ready    control-plane   2m58s   v1.30.0
+minikube-m02   Ready    <none>          2m36s   v1.30.0
+minikube-m03   Ready    <none>          2m21s   v1.30.0
+
+PS C:\Windows\system32> minikube kubectl -- get pods
+No resources found in default namespace.

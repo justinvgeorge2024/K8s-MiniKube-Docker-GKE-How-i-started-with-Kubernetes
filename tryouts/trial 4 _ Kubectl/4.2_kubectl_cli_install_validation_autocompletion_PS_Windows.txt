@@ -1,0 +1,84 @@
+curl command to install kubectl on windows
+----------------------
+PS C:\Windows\system32> curl.exe -LO "https://dl.k8s.io/release/v1.31.0/bin/windows/amd64/kubectl.exe"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   138  100   138    0     0    308      0 --:--:-- --:--:-- --:--:--   310
+100 55.2M  100 55.2M    0     0   349k      0  0:02:41  0:02:41 --:--:--  460k
+
+------------------------
+
+download checksum file to validate(optional)
+----------------------
+PS C:\Windows\system32> curl.exe -LO "https://dl.k8s.io/v1.31.0/bin/windows/amd64/kubectl.exe.sha256"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   138  100   138    0     0    380      0 --:--:-- --:--:-- --:--:--   383
+100    64  100    64    0     0    117      0 --:--:-- --:--:-- --:--:--   695
+
+----------------------------
+(validation)
+-----------------------------
+
+PS C:\Windows\system32> CertUtil -hashfile kubectl.exe SHA256
+>> type kubectl.exe.sha256
+>>
+SHA256 hash of kubectl.exe:
+<------------hash------->
+CertUtil: -hashfile command completed successfully.
+<---------alphabets-numbericals---->
+-------------------------------------------
+
+PS C:\Windows\system32> $(Get-FileHash -Algorithm SHA256 .\kubectl.exe).Hash -eq $(Get-Content .\kubectl.exe.sha256)
+True
+
+--------------
+Append or prepend the kubectl binary folder to your PATH environment variable.
+--> already present in my case
+--------------
+cross checking for correct version access
+--------------
+PS C:\Windows\system32> kubectl version --client
+Client Version: v1.31.0
+Kustomize Version: v5.4.2
+
+PS C:\Windows\system32> kubectl version --client --output=yaml
+clientVersion:
+  buildDate: "2024-08-13T07:37:34Z"
+  compiler: gc
+  gitCommit: 9edcffcde5595e8a5b1a35f88c421764e575afce
+  gitTreeState: clean
+  gitVersion: v1.31.0
+  goVersion: go1.22.5
+  major: "1"
+  minor: "31"
+  platform: windows/amd64
+kustomizeVersion: v5.4.2
+
+----------------------
+
+Verify kubectl configuration
+
+PS C:\Windows\system32> kubectl cluster-info
+Kubernetes control plane is running at https://127.0.0.1:55548
+CoreDNS is running at https://127.0.0.1:55548/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+
+------------------------
+enabling shell autocompletion
+
+PS C:\Windows\system32> kubectl completion powershell | Out-String | Invoke-Expression
+PS C:\Windows\system32> kubectl completion powershell >> $PROFILE
+----------
+restart shell to enable autocompletion
+----------
+if not working then...
+-----
+might need to enable scripts in powershell
+
+PS C:\Windows\system32> Set-ExecutionPolicy RemoteSigned
+
+then press Y
+then do above 2 shell  commands for auto completion
+-----
