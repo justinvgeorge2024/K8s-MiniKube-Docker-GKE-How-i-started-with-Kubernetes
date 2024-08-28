@@ -1,7 +1,7 @@
 *Current system : windows 11 Home | 16 GB ram | i7 12th Gen | nvidia RTX 3060 | Asus M16(2022 edition
 additional info : WSL 2 and Oracle vBox were already present before installing docker & minikube.
 
----issue------
+1)---issue------
 minikube start --driver=hyperv does not work properly
 ------
 *diagnosis
@@ -13,7 +13,7 @@ minikube start --driver=hyperv does not work properly
 --> another workaround (could be sketchy? not sure |Haven't Tried | Wont try in my current system) 
      	--> link : https://www.makeuseof.com/install-hyper-v-windows-11-home/
 
----issue------
+2)---issue------
 minikube start --driver=virtualbox throwing errors like VT-X/AT-X and other problems
 ------
 --> presence of WSL 2 induces some virualization problems and conflicts
@@ -24,7 +24,7 @@ minikube start --driver=virtualbox throwing errors like VT-X/AT-X and other prob
 	--> Using windows home which does not support Hyperv directly 
 #workaround | not found
 
----issue------
+3)---issue------
 Exiting due to GUEST_START: failed to start node: Failed kubeconfig update: decode kubeconfig from " ~\\.kube\\config": decode data: : yaml: control characters are not allowed
 ------ 
 *diagnosis
@@ -41,7 +41,7 @@ Exiting due to GUEST_START: failed to start node: Failed kubeconfig update: deco
 --> if problem still persists.. run> minikube delete (delete the problematic profiles [or all profiles (*_0) ])
 --> then delete the config file and retry the >minikube start
 
----issue----
+4)---issue----
 kubectl powershell auto completion not working
 *diagnosis
 -->might need to enable scripts in powershell
@@ -52,7 +52,7 @@ then run: kubectl completion powershell | Out-String | Invoke-Expression
 then run: kubectl completion powershell >> $PROFILE
 then restart PS
 
------issue------
+5)-----issue------
 [API's with authentication]
 commands like: > export TOKEN=$(kubectl create token default)
 *dosen't work in windows powershell/cmd
@@ -60,14 +60,14 @@ commands like: > export TOKEN=$(kubectl create token default)
 Run the command(s) in Git Bash
 
 
----issue----
+6)---issue----
 --> pod not READY
 refer trial_6 > pods
 * a sample problem case and solution is displayed
 # if the replace option is not working/ throwing errors
 * use --force to force the change
 
-------issue------
+7)------issue------
 > kubectl.exe get rs frontend --replicas=4
 error: unknown flag: --replicas
 #diagnosis
@@ -76,7 +76,7 @@ error: unknown flag: --replicas
 *supported command
 > kubectl scale rs frontend --replicas=4
 
-------issue--------
+8)------issue--------
 --> when running:
   >kubectl create namespace <namespace_name>
 *Unable to connect to the server: <---> connectex: No connection could be made because the target machine actively refused it.
@@ -86,4 +86,36 @@ error: unknown flag: --replicas
 -> check if docker(or alternatives) is running properly
 * command worked for me after running minikube start.
 
-------------------
+9)--------issue-----
+openssl , powershell , windows 11 Home problem
+*description
+running command >openssl req -new -key bob.key -out bob.csr -subj '/CN=bob/O=learner'
+Can't open "D:\bld\openssl_split_1678822181740\_h_env\Library/openssl.cnf" for reading, No such file or directory
+C8860000:error:80000003:system library:BIO_new_file:No such process:crypto\bio\bss_file.c:67:calling fopen(D:\bld\openssl_split_1678822181740\_h_env\Library/openssl.cnf, r)
+C8860000:error:10000080:BIO routines:BIO_new_file:no such file:crypto\bio\bss_file.c:75:
+
+#solution (use administrator privilages)
+run >choco install openssl
+close & reopen PS
+//problem solved
+
+10)-----issue-----
+Windows 11 | powershell issue | base64 conversion .csr file
+*issue
+> cat bob.csr | base64 | tr -d '\n','%'
+base64 : The term 'base64' is not recognized as the name of a cmdlet, function, script file, or operable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:15
++ cat bob.csr | base64 | tr -d '\n','%'
++               ~~~~~~
+    + CategoryInfo          : ObjectNotFound: (base64:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+*diagnosis
+--> no 'cat' in windows
+--> equivalent is type
+--> the above command first converts to base64 and then removes \n, % 
+--> to get desired output -- do following commands in PS :
+#solution / windows workround
+>type bob.csr | certutil -encode > bob_base64.txt
+>type bob_base64.txt | find /v "%" | find /v "^$" > bob_base64_clean.txt
