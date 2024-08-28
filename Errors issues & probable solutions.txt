@@ -117,5 +117,13 @@ At line:1 char:15
 --> the above command first converts to base64 and then removes \n, % 
 --> to get desired output -- do following commands in PS :
 #solution / windows workround
->type bob.csr | certutil -encode > bob_base64.txt
->type bob_base64.txt | find /v "%" | find /v "^$" > bob_base64_clean.txt
+run >certutil -encode bob.csr bob_base64.txt
+run >type bob_base64.txt | find /v "%" | find /v "^$" > bob_base64_clean.txt
+*more issus
+the second command might throw errors or might not work in some cases
+--> is such a case 
+	--> open bob_base64.txt -obtained after 1st command
+	--> then either manually remove the newlines from the file and use it
+	--> or revome the header and footer values :( ie., -----BEGIN PRIVATE KEY----- ,-----END PRIVATE KEY----- ) in the file : bob_base64.txt
+           --> then run> (Get-Content 'bob_base64.txt') -join '' | Set-Content 'bob64_final.txt'
+        --> required result obatined in bob64_final.txt
