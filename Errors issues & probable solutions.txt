@@ -76,4 +76,14 @@ error: unknown flag: --replicas
 *supported command
 > kubectl scale rs frontend --replicas=4
 
---------------
+------issue--------
+--> when running:
+  >kubectl create namespace <namespace_name>
+*Unable to connect to the server: <---> connectex: No connection could be made because the target machine actively refused it.
+*occurred aftter restarting the computer
+#diagnosis & solution
+-> check if Minikube (or alternatives) is up and running
+-> check if docker(or alternatives) is running properly
+* command worked for me after running minikube start.
+
+------------------
