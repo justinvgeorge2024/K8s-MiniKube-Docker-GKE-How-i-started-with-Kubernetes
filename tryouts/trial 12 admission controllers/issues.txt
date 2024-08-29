@@ -1,0 +1,30 @@
+will not recommend doing this in windows--
+even with wsl / git bash or other terminals
+
+--> do in Linux os
+
+--> too many issues
+
+once minikube ssh is done-->
+the terminal dimensions are set
+$COLUMNS is set to 80
+
+did not find any working solutions for the same
+will have to adjust to it
+
+--> the ssh terminal is buggy
+--> by default will have to use vi
+but after using the vi.. the cli interface is buggy , none of the default commands work properly.
+
+arrow keys dont work , esc , delete, backspace dont work.
+hjkl works sometimes.
+after pressing i , it is stuck on insert mode.
+
+--> did sudo apt install vim
+--> opened through vim
+--> arrow keys still dont work.
+--> fortunately hjkl works
+--> esc didnt work when in insert mode... but ctrl+c does the job.
+--> workaround not recommended.
+
+use Linux/Ubuntu for better user experience
